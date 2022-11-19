@@ -1,0 +1,24 @@
+{
+  "name": "advanced-node-authentication",
+  "version": "1.0.0",
+  "description": "Advanced Node JS authentication workflow with password reset",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rtewari056/advanced-node-authentication.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rtewari056/advanced-node-authentication/issues"
+  },
+  "homepage": "https://github.com/rtewari056/advanced-node-authentication#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2"
+  }
+}
