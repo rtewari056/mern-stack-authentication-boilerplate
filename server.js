@@ -11,6 +11,7 @@ connectDB(); // Connect to databse
 
 // API Routes
 app.use("/api/auth", require("./routes/auth"));
+app.use("/api/private", require("./routes/private"));
 
 // Error Handler Middleware (Should be at the end of all middlewares)
 app.use(errorHandler);
