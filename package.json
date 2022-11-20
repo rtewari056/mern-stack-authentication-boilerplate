@@ -19,8 +19,10 @@
   },
   "homepage": "https://github.com/rtewari056/advanced-node-authentication#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.0.3",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "mongoose": "^6.7.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"
