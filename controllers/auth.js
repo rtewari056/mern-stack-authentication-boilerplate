@@ -84,7 +84,7 @@ const forgotPassword = async (req, res, next) => {
     await user.save();
 
     // Create reset url to email to provided email
-    const resetUrl = `${process.env.APP_BASE_URL}/passwordreset/${resetToken}`;
+    const resetUrl = `${process.env.APP_BASE_URL}/passwordReset/${resetToken}`;
 
     // Reset password email template in HTML
     const html = `
@@ -140,6 +140,7 @@ const resetPassword = async (req, res, next) => {
     }
 
     user.password = password; // Modify existing password
+    // As we already used the "resetPasswordToken", we will set it to "undefined"
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
 
