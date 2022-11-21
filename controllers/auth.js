@@ -56,8 +56,31 @@ const login = async (req, res, next) => {
   }
 };
 
-const forgotPassword = (req, res, next) => {
-  res.send("Forgot Password Route");
+const forgotPassword = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return next(new ErrorResponse("Email could not be sent", 404));
+    }
+
+    // Generate Reset Token and add to database hashed (private) version of token
+    const resetToken = user.getResetPasswordToken();
+
+    await user.save();
+
+    // Create reset url to email to provided email
+    const resetUrl = `${APP_BASE_URL}/passwordreset/${resetToken}`;
+
+    // Reset password message template in HTML
+    const message = `
+      <h1>You have requested a password reset</h1>
+      <p>Please go to this link to reset your password:</p>
+      <a href=${resetUrl} clicktracking=off>${resetUrl}</a>
+    `;
+  } catch (error) {}
 };
 
 const resetPassword = (req, res, next) => {
