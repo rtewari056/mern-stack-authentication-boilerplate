@@ -1,6 +1,12 @@
+const crypto = require("crypto");
+
 const User = require("../models/User");
 const ErrorResponse = require("../utils/errorResponse"); // As we will handle errors using "next()"
+const sendEmail = require("../utils/sendEmail");
 
+// @description     Register a user
+// @route           POST /api/auth/register
+// @access          Public
 const register = async (req, res, next) => {
   try {
     const { username, email, password } = req.body;
@@ -29,6 +35,9 @@ const register = async (req, res, next) => {
   }
 };
 
+// @description     Login a user
+// @route           POST /api/auth/login
+// @access          Public
 const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -56,6 +65,9 @@ const login = async (req, res, next) => {
   }
 };
 
+// @description     Forgot password
+// @route           POST /api/auth/forgotPassword
+// @access          Public
 const forgotPassword = async (req, res, next) => {
   try {
     const { email } = req.body;
@@ -72,19 +84,74 @@ const forgotPassword = async (req, res, next) => {
     await user.save();
 
     // Create reset url to email to provided email
-    const resetUrl = `${APP_BASE_URL}/passwordreset/${resetToken}`;
+    const resetUrl = `${process.env.APP_BASE_URL}/passwordreset/${resetToken}`;
 
-    // Reset password message template in HTML
-    const message = `
+    // Reset password email template in HTML
+    const html = `
       <h1>You have requested a password reset</h1>
       <p>Please go to this link to reset your password:</p>
       <a href=${resetUrl} clicktracking=off>${resetUrl}</a>
     `;
-  } catch (error) {}
+
+    try {
+      await sendEmail({
+        to: user.email,
+        subject: "Password Reset Request",
+        text: "Your password can be reset by clicking the link below",
+        html,
+      });
+
+      return res
+        .status(200)
+        .json({ success: true, data: "Email Sent Successfully" });
+    } catch (error) {
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpire = undefined;
+
+      await user.save();
+
+      return next(new ErrorResponse("Email could not be sent", 500));
+    }
+  } catch (error) {
+    return next(error);
+  }
 };
 
-const resetPassword = (req, res, next) => {
-  res.send("Reset Password Route");
+// @description     Reset password
+// @route           PUT /api/auth/resetPassword/:resetToken
+// @access          Public
+const resetPassword = async (req, res, next) => {
+  const { password } = req.body;
+
+  // Compare token in URL params to hashed token
+  const resetPasswordToken = crypto
+    .createHash("sha256")
+    .update(req.params.resetToken)
+    .digest("hex");
+
+  try {
+    const user = await User.findOne({
+      resetPasswordToken,
+      resetPasswordExpire: { $gt: Date.now() }, // Check if token is still valid
+    });
+
+    if (!user) {
+      return next(new ErrorResponse("Invalid reset token", 400));
+    }
+
+    user.password = password; // Modify existing password
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+
+    await user.save();
+
+    return res.status(201).json({
+      success: true,
+      data: "Password Updated Successfully",
+    });
+  } catch (error) {
+    return next(error);
+  }
 };
 
 const sendToken = (user, statusCode, res) => {
