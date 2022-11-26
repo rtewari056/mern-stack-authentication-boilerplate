@@ -55,7 +55,7 @@ const LoginPage = () => {
       });
       const data = await response.json();
 
-      localStorage.setItem("authToken", data.token); // Save token in local storage
+      localStorage.setItem("auth", JSON.stringify(data)); // Save auth details in local storage
 
       navigate("/"); // Go to home page
     } catch (error) {

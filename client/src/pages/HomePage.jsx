@@ -14,7 +14,7 @@ const HomePage = () => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+          Authorization: `Bearer ${JSON.parse(localStorage.getItem("auth")).token}`,
         },
       });
       const data = await response.json();
@@ -37,7 +37,7 @@ const HomePage = () => {
   }, []);
 
   const logoutHandler = () => {
-    localStorage.removeItem("authToken");
+    localStorage.removeItem("auth");
     navigate("/login");
   };
 

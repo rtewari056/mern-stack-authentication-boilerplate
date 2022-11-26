@@ -1,5 +1,4 @@
 import {
-  BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
@@ -19,7 +18,6 @@ import {
 
 const App = () => {
   return (
-    <Router>
       <Routes>
         {/* Private routes (Requires authentication token) */}
         <Route element={<PrivateRoutes />}>
@@ -38,7 +36,6 @@ const App = () => {
         {/* If the user enters an invalid path in the URL it automatically redirects them to the homepage */}
         <Route path="*" element={<Navigate to="/register" replace />} />
       </Routes>
-    </Router>
   );
 };
 
