@@ -158,7 +158,13 @@ const resetPassword = async (req, res, next) => {
 const sendToken = (user, statusCode, res) => {
   return res
     .status(statusCode)
-    .json({ success: true, token: user.getSignedToken(), expires_at: new Date(Date.now() + process.env.JWT_EXPIRE * 60 * 60 * 1000 ) });
+    .json({
+      success: true,
+      token: user.getSignedToken(),
+      expires_at: new Date(
+        Date.now() + process.env.JWT_EXPIRE * 60 * 60 * 1000
+      ),
+    });
 };
 
 module.exports = { register, login, forgotPassword, resetPassword };

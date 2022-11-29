@@ -1,8 +1,7 @@
-import {
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.min.css"; // CSS for "react-toastify"
 
 // Private route
 import PrivateRoutes from "./utils/PrivateRoutes";
@@ -14,14 +13,20 @@ import {
   RegisterPage,
   ForgotPasswordPage,
   PasswordResetPage,
+  AboutPage,
+  ProfilePage,
 } from "./pages";
+import { NavigationBar } from "./components";
 
 const App = () => {
   return (
+    <>
+      <NavigationBar />
       <Routes>
         {/* Private routes (Requires authentication token) */}
         <Route element={<PrivateRoutes />}>
           <Route path="/" element={<HomePage />} />
+          <Route path="/profile" element={<ProfilePage />} />
         </Route>
 
         {/* Public routes */}
@@ -32,10 +37,15 @@ const App = () => {
           path="/passwordReset/:resetToken"
           element={<PasswordResetPage />}
         />
+        <Route path="/about" element={<AboutPage />} />
 
         {/* If the user enters an invalid path in the URL it automatically redirects them to the homepage */}
-        <Route path="*" element={<Navigate to="/register" replace />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
+
+      {/* Remember to render the ToastContainer once in your application tree. Rendering it in the application root would be the best bet */}
+      <ToastContainer />
+    </>
   );
 };
 
