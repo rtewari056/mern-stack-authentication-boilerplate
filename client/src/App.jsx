@@ -4,7 +4,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css"; // CSS for "react-toastify"
 
 // Private route
-import PrivateRoutes from "./utils/PrivateRoutes";
+import { PrivateRoutes } from "./utils";
 
 // Pages
 import {

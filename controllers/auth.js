@@ -46,7 +46,7 @@ const login = async (req, res, next) => {
       return next(new ErrorResponse("Please provide email and password", 400));
     }
 
-    const user = await User.findOne({ email }).select("+password"); // Explicitly ing password
+    const user = await User.findOne({ email }).select("+password"); // Explicitly adding password
 
     if (!user) {
       return next(new ErrorResponse("Invalid credentials", 401));

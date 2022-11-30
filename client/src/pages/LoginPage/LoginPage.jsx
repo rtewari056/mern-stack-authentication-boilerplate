@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { Form, Button, Spinner } from "react-bootstrap";
 
 import { AuthState } from "../../context/AuthProvider";
+import { Notify } from "../../utils";
 
 const LoginPage = () => {
   const [credentials, setCredentials] = useState({
@@ -26,16 +26,7 @@ const LoginPage = () => {
     // If any field is missing
     if (!credentials.email || !credentials.password) {
       setIsLoading(false);
-      return toast.warn("Please Fill all the Feilds", {
-        position: "bottom-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      return Notify("Please Fill all the Feilds", "warn");
     }
 
     try {
@@ -56,41 +47,14 @@ const LoginPage = () => {
         setAuth(data);
         setIsLoading(false);
         navigate("/"); // Go to home page
-        return toast.success(data.data, {
-          position: "bottom-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        return Notify("You are successfully logged in", "success");
       } else {
         setIsLoading(false);
-        return toast.warn(data.error, {
-          position: "bottom-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        return Notify(data.error, "warn");
       }
     } catch (error) {
       setIsLoading(false);
-      return toast.error("Internal server error", {
-        position: "bottom-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      return Notify("Internal server error", "error");
     }
   };
 
@@ -130,8 +94,17 @@ const LoginPage = () => {
         </Link>
       </Form.Group>
 
-      <Button variant="success" type="submit" className="mb-3" disabled={isLoading}>
-        {isLoading ? <Spinner animation="border" role="status" size="sm" /> : "Continue"}
+      <Button
+        variant="success"
+        type="submit"
+        className="mb-3"
+        disabled={isLoading}
+      >
+        {isLoading ? (
+          <Spinner animation="border" role="status" size="sm" />
+        ) : (
+          "Continue"
+        )}
       </Button>
 
       <Form.Group className="mb-3 text-center" controlId="register">

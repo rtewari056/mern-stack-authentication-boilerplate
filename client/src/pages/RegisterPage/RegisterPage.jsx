@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Spinner } from "react-bootstrap";
 
 import { AuthState } from "../../context/AuthProvider";
+import { Notify } from "../../utils";
 
 const RegisterPage = () => {
   const [credentials, setCredentials] = useState({
@@ -12,6 +12,7 @@ const RegisterPage = () => {
     password: "",
     confirmPassword: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
   const { setAuth } = AuthState();
@@ -22,6 +23,7 @@ const RegisterPage = () => {
 
   const registerHandler = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     // If any field is missing
     if (
@@ -30,30 +32,20 @@ const RegisterPage = () => {
       !credentials.password ||
       !credentials.confirmPassword
     ) {
-      return toast.warn("Please Fill all the Feilds", {
-        position: "bottom-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      setIsLoading(false);
+      return Notify("Please Fill all the Feilds", "warn");
     }
 
     // If password and confirm password doesn't match
     if (credentials.password !== credentials.confirmPassword) {
-      return toast.warn("Passwords Do Not Match", {
-        position: "bottom-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      setIsLoading(false);
+      return Notify("Passwords Do Not Match", "warn");
+    }
+
+    // If password is less than 8 characters
+    if (credentials.password.length < 8) {
+      setIsLoading(false);
+      return Notify("Password must be at least 8 characters", "warn");
     }
 
     try {
@@ -70,21 +62,19 @@ const RegisterPage = () => {
       });
       const data = await response.json();
 
-      localStorage.setItem("auth", JSON.stringify(data)); // Save auth details in local storage
-      setAuth(data);
-
-      navigate("/"); // Go to home page
+      if (data.success) {
+        localStorage.setItem("auth", JSON.stringify(data)); // Save auth details in local storage
+        setAuth(data);
+        setIsLoading(false);
+        navigate("/"); // Go to home page
+        return Notify("Your account has been successfully created", "success");
+      } else {
+        setIsLoading(false);
+        return Notify(data.error, "error");
+      }
     } catch (error) {
-      return toast.error("Internal server error", {
-        position: "bottom-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      setIsLoading(false);
+      return Notify("Internal server error", "error");
     }
   };
 
@@ -129,9 +119,9 @@ const RegisterPage = () => {
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="confirmPassword">
-        <Form.Label>confirmPassword</Form.Label>
+        <Form.Label>Confirm Password</Form.Label>
         <Form.Control
-          type="confirmPassword"
+          type="password"
           name="confirmPassword"
           tabIndex="4"
           placeholder="Confirm password"
@@ -140,8 +130,18 @@ const RegisterPage = () => {
         />
       </Form.Group>
 
-      <Button tabIndex="5" variant="success" type="submit" className="mb-3">
-        Create Account
+      <Button
+        tabIndex="5"
+        variant="success"
+        type="submit"
+        className="mb-3"
+        disabled={isLoading}
+      >
+        {isLoading ? (
+          <Spinner animation="border" role="status" size="sm" />
+        ) : (
+          "Create Account"
+        )}
       </Button>
 
       <Form.Group className="mb-3 text-center" controlId="register">

@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { toast } from "react-toastify";
 import { Form, Button, Spinner, Container } from "react-bootstrap";
 
 import IMAGES from "../../assets";
+import { Notify } from "../../utils";
 
 const ForgotPasswordScreen = () => {
   const [email, setEmail] = useState("");
@@ -16,16 +16,7 @@ const ForgotPasswordScreen = () => {
     // If any field is missing
     if (!email) {
       setIsLoading(false);
-      return toast.warn("Please Fill all the Feilds", {
-        position: "bottom-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      return Notify("Please Fill all the Feilds", "warn");
     }
 
     try {
@@ -43,41 +34,14 @@ const ForgotPasswordScreen = () => {
       if (data.success) {
         setIsLoading(false);
         setIsEmailSent(true);
-        return toast.success(data.data, {
-          position: "bottom-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        return Notify(data.data, "success");
       } else {
         setIsLoading(false);
-        return toast.error(data.error, {
-          position: "bottom-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        return Notify(data.error, "error");
       }
     } catch (error) {
       setIsLoading(false);
-      return toast.error("Internal server error", {
-        position: "bottom-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      return Notify("Internal server error", "error");
     }
   };
 

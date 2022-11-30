@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import { toast } from "react-toastify";
 import { Form, Button, Spinner, Container } from "react-bootstrap";
 
 import IMAGES from "../../assets";
+import { Notify } from "../../utils";
 
 const PasswordResetPage = () => {
   const [credentials, setCredentials] = useState({
@@ -26,46 +26,19 @@ const PasswordResetPage = () => {
     // If any field is missing
     if (!credentials.password || !credentials.confirmPassword) {
       setIsLoading(false);
-      return toast.warn("Please Fill all the Feilds", {
-        position: "bottom-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      return Notify("Please Fill all the Feilds", "warn");
     }
 
     // If password and confirm password doesn't match
     if (credentials.password !== credentials.confirmPassword) {
       setIsLoading(false);
-      return toast.warn("Passwords Do Not Match", {
-        position: "bottom-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      return Notify("Passwords Do Not Match", "warn");
     }
 
     // If password is less than 8 characters
     if (credentials.password.length < 8) {
       setIsLoading(false);
-      return toast.warn("Password must be at least 8 characters", {
-        position: "bottom-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      return Notify("Password must be at least 8 characters", "warn");
     }
 
     try {
@@ -83,41 +56,14 @@ const PasswordResetPage = () => {
       if (data.success) {
         setIsLoading(false);
         setIsPasswordReset(true);
-        return toast.success(data.data, {
-          position: "bottom-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        return Notify(data.data, "success");
       } else {
         setIsLoading(false);
-        return toast.error(data.error, {
-          position: "bottom-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
+        return Notify(data.error, "error");
       }
     } catch (error) {
       setIsLoading(false);
-      return toast.error("Internal server error", {
-        position: "bottom-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+      return Notify("Internal server error", "error");
     }
   };
 
