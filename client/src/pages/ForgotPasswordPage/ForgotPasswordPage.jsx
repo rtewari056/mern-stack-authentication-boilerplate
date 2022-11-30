@@ -89,11 +89,12 @@ const ForgotPasswordScreen = () => {
             src={IMAGES.email}
             className="mx-auto d-block mt-5 mb-3"
             width="100px"
-            alt="email"
+            alt="email sent successfully"
           />
+
           <p className="email__heading text-center fs-2">Check your mail</p>
           <p className="text-center text-muted fs-5">
-            We have sent a password recover instructions to your email
+            We have sent a password recover instructions to your email.
           </p>
         </Container>
       ) : (
