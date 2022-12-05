@@ -9,27 +9,39 @@ const sendEmail = require("../utils/sendEmail");
 // @access          Public
 const register = async (req, res, next) => {
   try {
-    const { username, email, password } = req.body;
-
-    if (!username || !email || !password) {
+    const { name, email, password, profilePic } = req.body;
+    // Check if any of them is undefined
+    if (!name || !email || !password) {
       return next(
-        new ErrorResponse("Please provide username, email and password", 400)
+        new ErrorResponse("Please provide name, email and password", 400)
       );
     }
 
-    const userExists = await User.findOne({ email });
+    // Check if user already exists in our DB
+    const userExists = await User.findOne({ email }).exec();
 
     if (userExists) {
       return next(new ErrorResponse("User already exists", 400));
     }
 
-    const user = await User.create({
-      username,
-      email,
-      password,
-    });
+    // Register and store the new user
+    const user = await User.create(
+      // If there is no picture present, remove 'profilePic'
+      profilePic === undefined || profilePic.length === 0
+        ? {
+            name,
+            email,
+            password,
+          }
+        : {
+            name,
+            email,
+            password,
+            profilePic,
+          }
+    );
 
-    return sendToken(user, 201, res);
+    return sendAuth(user, 201, res);
   } catch (error) {
     return next(error);
   }
@@ -59,7 +71,7 @@ const login = async (req, res, next) => {
       return next(new ErrorResponse("Invalid credentials", 401));
     }
 
-    return sendToken(user, 200, res);
+    return sendAuth(user, 200, res);
   } catch (error) {
     return next(error);
   }
@@ -155,16 +167,15 @@ const resetPassword = async (req, res, next) => {
   }
 };
 
-const sendToken = (user, statusCode, res) => {
-  return res
-    .status(statusCode)
-    .json({
-      success: true,
-      token: user.getSignedToken(),
-      expires_at: new Date(
-        Date.now() + process.env.JWT_EXPIRE * 60 * 60 * 1000
-      ),
-    });
+const sendAuth = (user, statusCode, res) => {
+  return res.status(statusCode).json({
+    success: true,
+    name: user.name,
+    email: user.email,
+    profilePic: user.profilePic,
+    token: user.getSignedToken(),
+    expires_at: new Date(Date.now() + process.env.JWT_EXPIRE * 60 * 60 * 1000),
+  });
 };
 
 module.exports = { register, login, forgotPassword, resetPassword };

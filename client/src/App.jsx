@@ -14,7 +14,6 @@ import {
   ForgotPasswordPage,
   PasswordResetPage,
   AboutPage,
-  ProfilePage,
 } from "./pages";
 import { NavigationBar } from "./components";
 
@@ -26,7 +25,6 @@ const App = () => {
         {/* Private routes (Requires authentication token) */}
         <Route element={<PrivateRoutes />}>
           <Route path="/" element={<HomePage />} />
-          <Route path="/profile" element={<ProfilePage />} />
         </Route>
 
         {/* Public routes */}

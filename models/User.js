@@ -5,7 +5,7 @@ const crypto = require("crypto");
 
 const UserSchema = new mongoose.Schema(
   {
-    username: { type: String, required: [true, "Please provide a username"] },
+    name: { type: String, required: [true, "Please provide a name"] },
     email: {
       type: String,
       unique: true,
@@ -21,6 +21,11 @@ const UserSchema = new mongoose.Schema(
       required: [true, "Please add a password"],
       minlength: 8,
       select: false, // Whenever we query for a user, do we want to return password as well
+    },
+    profilePic: {
+      type: String,
+      default:
+        "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg", // Default profile pic
     },
     resetPasswordToken: String, // String is shorthand for {type: String}
     resetPasswordExpire: Date,

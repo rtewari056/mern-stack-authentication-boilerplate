@@ -28,3 +28,20 @@ body {
 .email__heading {
   font-weight: 500;
 }
+
+#profilePicUpload {
+  height: 130px;
+  width: 130px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+#profileModal {
+  height: 130px;
+  width: 130px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+#profileDropdownIcon {
+  height: 40px;
+  width: 40px;
+}

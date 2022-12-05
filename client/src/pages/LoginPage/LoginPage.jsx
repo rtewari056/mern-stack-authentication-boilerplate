@@ -88,6 +88,7 @@ const LoginPage = () => {
       <Form.Group className="mb-3 mt-1 text-center" controlId="register">
         <Link
           to="/forgotPassword"
+          tabIndex="4"
           className="d-flex flex-row-reverse text-decoration-none mb-3"
         >
           Forgot password?
@@ -97,6 +98,7 @@ const LoginPage = () => {
       <Button
         variant="success"
         type="submit"
+        tabIndex="3"
         className="mb-3"
         disabled={isLoading}
       >
@@ -110,7 +112,7 @@ const LoginPage = () => {
       <Form.Group className="mb-3 text-center" controlId="register">
         <span>
           Don't have an account?&nbsp;
-          <Link to="/register" className="text-decoration-none">
+          <Link to="/register" tabIndex="5" className="text-decoration-none">
             Register now
           </Link>
         </span>

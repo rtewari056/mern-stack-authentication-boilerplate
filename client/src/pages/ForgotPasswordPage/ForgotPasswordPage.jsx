@@ -85,6 +85,7 @@ const ForgotPasswordScreen = () => {
             variant="success"
             type="submit"
             className="mb-3"
+            tabIndex="2"
             disabled={isLoading}
           >
             {isLoading ? (
