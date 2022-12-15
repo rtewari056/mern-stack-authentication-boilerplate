@@ -163,6 +163,7 @@ cd mern-stack-authentication-boilerplate
 ```bash
 # In the root directory put your creadentials
 APP_BASE_URL=http://localhost:3000
+NODE_ENV=development
 PORT=5000
 MONGO_URI="YOUR_MONGO_CONNECTION_URL"
 JWT_SECRET="YOUR_JWT_SECRET"
