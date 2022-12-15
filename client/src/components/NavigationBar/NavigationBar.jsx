@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  Button,
   Container,
   Dropdown,
   DropdownButton,
@@ -11,9 +10,10 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 
 import IMAGES from "../../assets"; // Importing images from single "IMAGES" object
-import "./NavigationBar.css";
 import { AuthState } from "../../context/AuthProvider";
 import ProfileModal from "../ProfileModal/ProfileModal";
+
+import "./NavigationBar.css";
 
 const NavigationBar = () => {
   const [modalShow, setModalShow] = useState(false);
@@ -28,7 +28,7 @@ const NavigationBar = () => {
   };
 
   return (
-    <Navbar collapseOnSelect expand="md" bg="dark" variant="dark">
+    <Navbar collapseOnSelect expand="md" variant="dark" id="nav">
       <Container>
         <Navbar.Brand as={Link} to="/">
           <img
@@ -43,57 +43,50 @@ const NavigationBar = () => {
 
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
 
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link as={Link} to="/about">
-              About
-            </Nav.Link>
-          </Nav>
-
-          <Nav>
-            {auth ? (
-              <DropdownButton
-                variant="dark"
-                align="end"
-                title={
-                  <Image
-                    id="profileDropdownIcon"
-                    src={auth.profilePic}
-                    alt="Navbar profile image"
-                    roundedCircle
-                  />
-                }
-              >
-                <Dropdown.Item as="button" onClick={() => setModalShow(true)}>
-                  Profile
-                </Dropdown.Item>
-                <ProfileModal
-                  show={modalShow}
-                  onHide={() => setModalShow(false)}
+        <Navbar.Collapse className="justify-content-end">
+          {auth ? (
+            <DropdownButton
+              variant=""
+              align="end"
+              title={
+                <Image
+                  id="profileDropdownIcon"
+                  src={auth.profilePic}
+                  alt="Navbar profile image"
+                  roundedCircle
                 />
+              }
+            >
+              <Dropdown.Item as="button" onClick={() => setModalShow(true)}>
+                Profile
+              </Dropdown.Item>
+              <ProfileModal
+                show={modalShow}
+                onHide={() => setModalShow(false)}
+              />
 
-                <Dropdown.Divider />
+              <Dropdown.Divider />
 
-                <Dropdown.Item as="button" onClick={logoutHandler}>
-                  Log out
-                </Dropdown.Item>
-              </DropdownButton>
-            ) : (
-              <Nav.Item>
-                <Link to="/login">
-                  <Button className="me-2" variant="outline-primary" size="sm">
-                    Log in
-                  </Button>
-                </Link>
-
-                <Link to="/register">
-                  <Button variant="primary" size="sm">
-                    Register
-                  </Button>
-                </Link>
-              </Nav.Item>
-            )}
-          </Nav>
+              <Dropdown.Item as="button" onClick={logoutHandler}>
+                Log out
+              </Dropdown.Item>
+            </DropdownButton>
+          ) : (
+            <Nav.Item>
+              <button
+                className="nav-button me-2"
+                onClick={() => navigate("/login")}
+              >
+                Log in
+              </button>
+              <button
+                className="nav-button"
+                onClick={() => navigate("/register")}
+              >
+                Register
+              </button>
+            </Nav.Item>
+          )}
         </Navbar.Collapse>
       </Container>
     </Navbar>

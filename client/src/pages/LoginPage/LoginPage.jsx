@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Button, Spinner } from "react-bootstrap";
+import { FaUserAlt } from "react-icons/fa";
 
 import { AuthState } from "../../context/AuthProvider";
 import { Notify } from "../../utils";
@@ -60,7 +61,7 @@ const LoginPage = () => {
 
   return (
     <Form className="auth__form" onSubmit={loginHandler}>
-      <h2 className="text-center mb-5">Hello Again!</h2>
+      <h3 className="text-center mb-5">Login to Your Account</h3>
       <Form.Group className="mb-3" controlId="email">
         <Form.Label>Email address</Form.Label>
         <Form.Control
@@ -107,6 +108,19 @@ const LoginPage = () => {
         ) : (
           "Continue"
         )}
+      </Button>
+
+      <Button
+        variant="danger"
+        type="button"
+        tabIndex="4"
+        className="mb-3"
+        onClick={() =>
+          setCredentials({ email: "guest@example.com", password: "12345678" })
+        }
+      >
+        <FaUserAlt className="me-2" />
+        Get Guest User Credentials
       </Button>
 
       <Form.Group className="mb-3 text-center" controlId="register">
