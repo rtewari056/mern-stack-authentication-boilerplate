@@ -12,7 +12,7 @@ connectDB(); // Connect to databse
 
 // API Routes
 app.use("/api/auth", require("./routes/auth"));
-app.use("/api/private", require("./routes/private"));
+app.use("/api/private", require("./routes/private")); 
 
 // --------------------------DEPLOYMENT------------------------------
 

@@ -2,6 +2,7 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const ErrorResponse = require("../utils/errorResponse");
 
+
 const protect = async (req, res, next) => {
   let token;
 
@@ -31,5 +32,8 @@ const protect = async (req, res, next) => {
     return next(new ErrorResponse("Not authorized to access this route", 401));
   }
 };
+
+
+
 
 module.exports = { protect };

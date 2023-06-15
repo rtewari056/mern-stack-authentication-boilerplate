@@ -1,8 +1,8 @@
 const crypto = require("crypto");
-
 const User = require("../models/User");
 const ErrorResponse = require("../utils/errorResponse"); // As we will handle errors using "next()"
 const sendEmail = require("../utils/sendEmail");
+const Transaction = require("../models/Transaction");
 
 // @description     Register a user
 // @route           POST /api/auth/register
@@ -105,25 +105,26 @@ const forgotPassword = async (req, res, next) => {
       <a href=${resetUrl} clicktracking=off>${resetUrl}</a>
     `;
 
-    try {
-      await sendEmail({
-        to: user.email,
-        subject: "Password Reset Request",
-        text: "Your password can be reset by clicking the link below",
-        html,
-      });
+    // Uncomment for email SMTP functionality
+    // try {
+    //   await sendEmail({
+    //     to: user.email,
+    //     subject: "Password Reset Request",
+    //     text: "Your password can be reset by clicking the link below",
+    //     html,
+    //   });
 
-      return res
-        .status(200)
-        .json({ success: true, data: "Email Sent Successfully" });
-    } catch (error) {
-      user.resetPasswordToken = undefined;
-      user.resetPasswordExpire = undefined;
+    //   return res
+    //     .status(200)
+    //     .json({ success: true, data: "Email Sent Successfully" });
+    // } catch (error) {
+    //   user.resetPasswordToken = undefined;
+    //   user.resetPasswordExpire = undefined;
 
-      await user.save();
+    //   await user.save();
 
-      return next(new ErrorResponse("Email could not be sent", 500));
-    }
+    //   return next(new ErrorResponse("Email could not be sent", 500));
+    // }
   } catch (error) {
     return next(error);
   }
@@ -178,4 +179,49 @@ const sendAuth = (user, statusCode, res) => {
   });
 };
 
-module.exports = { register, login, forgotPassword, resetPassword };
+
+// @description     Create a new transaction
+// @route           POST /api/auth/transaction
+// @access          Private
+const createTransaction = async (req, res, next) => {
+  try {
+    const { amount, description } = req.body;
+    const userId = req.user.id; // This is obtained from the auth middleware.
+
+    if (!amount || !description) {
+      return next(new ErrorResponse("Please provide amount and description", 400));
+    }
+
+    // Create a new transaction
+    const transaction = await Transaction.create({ user: userId, amount, description });
+
+    return res.status(201).json({
+      success: true,
+      data: transaction
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+
+// @description     Get all transactions for the logged-in user
+// @route           GET /api/auth/transactions
+// @access          Private
+const getUserTransactions = async (req, res, next) => {
+  try {
+    const userId = req.user.id; // This is obtained from the auth middleware.
+
+    // Fetch all transactions for this user
+    const transactions = await Transaction.find({ user: userId });
+
+    return res.status(200).json({
+      success: true,
+      data: transactions
+    });
+  } catch (error) {
+    return next(error);
+  }
+};
+
+module.exports = { register, login, forgotPassword, resetPassword, createTransaction, getUserTransactions };

@@ -1,12 +1,12 @@
 <div align="center">
 
 <!-- Title: -->
-  <a href="https://mernauth.rohittewari.live" target="_blank">
-    <img src="https://user-images.githubusercontent.com/75976169/207795985-7582432a-3f1f-4600-9078-57d312267229.png" height="150" alt="Logo with shadow">
+  <a target="_blank">
+    <img src="./Screenshot 2023-06-14 004446.png" height="150" alt="Logo with shadow">
   </a>
 
 <!-- Short description: -->
-<h2>Ultimate MERN Stack Authentication Boilerplate for production use</h2>
+<h2>TransFund</h2>
 
 <!-- Labels: -->
   <div>
@@ -25,9 +25,7 @@
 
 ## 🚀 Demo
 
-This application is deployed on DigitalOcean. Please check it out :smile: [here](https://mernauth.rohittewari.live).
-
-![mern-stack-authentication-boilerplate](https://user-images.githubusercontent.com/75976169/207791814-80e8ff7b-39d1-4db4-b450-b861f98e406f.png)
+This application will be deployed on  
 
 ## 🖥️ Tech Stack
 
@@ -52,7 +50,7 @@ This application is deployed on DigitalOcean. Please check it out :smile: [here]
 
 **Deployed On:**
 
-[![DigitalOcean](https://img.shields.io/badge/Digital_Ocean-0080FF?style=for-the-badge&logo=DigitalOcean&logoColor=white)](https://mernauth.rohittewari.live)
+
 
 ## ⚡️ Features
 
@@ -145,46 +143,29 @@ This application is deployed on DigitalOcean. Please check it out :smile: [here]
 
 In order to run the project you need `node>=16` and `npm>=8` installed on your machine.
 
+## MongoDB
+
+Install MongoDB Compass. And make sure path env is set. Then run `mongod` in terminal. 
+Afterwards, start server. (remember to set env variable in .env file using 127.0.0.1 NOT localhost)
+
 ## 🚩 Getting Started
 
-### 1. Clone the `mern-stack-authentication-boilerplate` repository:
+### 1. Clone this repository
 
-```bash
-git clone https://github.com/rtewari056/mern-stack-authentication-boilerplate.git
-```
+### 2. Navigate into repo
 
-### 2. Navigate into repo:
-```bash
-cd mern-stack-authentication-boilerplate
-```
-
-### 3. Rename `.env.example` into `.env` and put all creadentials:
-
-```bash
-# In the root directory put your creadentials
-APP_BASE_URL=http://localhost:3000
-NODE_ENV=development
-PORT=5000
-MONGO_URI="YOUR_MONGO_CONNECTION_URL"
-JWT_SECRET="YOUR_JWT_SECRET"
-JWT_EXPIRE=24 # In hours
-SMTP_HOST=<YOUR_SMTP_SERVER_HOST_NAME>
-SMTP_PORT=587
-SMTP_USER=<YOUR_SMTP_SERVER_USER_NAME>
-SMTP_PASSWORD=<YOUR_SMTP_SERVER_PASSWORD>
-EMAIL_FROM=<EMAIL_ADDRESS_OF_SENDER>
-
-# Now go to client folder and put your cloudinary creadentials 
-REACT_APP_CLOUDINARY_CLOUD_NAME=<YOUR_CLOUDINARY_CLOUD_NAME>
-REACT_APP_CLOUDINARY_UPLOAD_PRESET=<YOUR_CLOUDINARY_UPLOAD_PRESET>
-```
+### 3. Rename `.env.example` into `.env` and put all necessary creadentials
 
 ### 4. Install package dependencies:
 
 ```bash
-npm install # Server dependencies
+# Server dependencies
+npm install express cors mongoose dotenv jsonwebtoken bcrypt
+
 cd client
-npm install # Client dependencies
+
+# Client dependencies
+npm install 
 ```
 
 ### 4. Run project:
@@ -196,21 +177,3 @@ npm run server
 ```
 
 ### 5. Open your browser and go to `http://localhost:3000`
-
-## 👤 Developer
-
-[Rohit Tewari](https://github.com/rtewari056)
-
-## 📬 Contact
-
-If you want to contact me, you can reach me through below handles.
-
-<a href="https://linkedin.com/in/rtewari056" target="_blank"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"/></a>
-<a href="mailto:rtewari056@gmail.com"><img  alt="Gmail" src="https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white" /></a>
-<a href="https://twitter.com/rtewari056" target="_blank"><img src="https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white" alt="Twitter"/></a>
-
-## 📃 License
-
-MERN Stack Authentication Boilerplate is licensed under the <a href="./LICENSE">MIT License</a>.
-
-### Show your support by 🌟 the project
