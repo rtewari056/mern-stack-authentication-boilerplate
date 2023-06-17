@@ -4,7 +4,7 @@
   "description": "Ultimate MERN Stack Authentication Boilerplate for production use",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node ./dist/server.js",
     "server": "nodemon server.js",
     "build": "tsc",
     "client": "npm start --prefix client"
